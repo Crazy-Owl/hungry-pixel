@@ -78,8 +78,8 @@ function Hero:update(dt)
     self.speed[2] = self.speed[2] - self.speed[2] * self.slowing * dt
     self.timeToShrink = self.timeToShrink - dt
     if self.timeToShrink <= 0 then
-       self.w = self.w - 2
-       self.h = self.h - 2
+       self.w = self.w - 4
+       self.h = self.h - 4
        if self.w < 1 then
           self.w = 1
        end
@@ -109,7 +109,7 @@ function Hero:collide(obj)
     self.score = self.score + 1
     self.w = self.w + 5
     self.h = self.h + 5
-    self.timeToShrink = self.timeToShrink + 10
+    self.timeToShrink = 10
     objectAppearTimer = objectAppearTimer - 1
 end
 
