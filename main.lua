@@ -55,7 +55,7 @@ function love.draw()
     provide_system_info(10, 25)
 end
 
-unction love.keypressed(key) -- love.keypressed работает, когда нажимается кнопка. key - нажатая кнопка
+function love.keypressed(key) -- love.keypressed работает, когда нажимается кнопка. key - нажатая кнопка
     if key == "escape" then
         if state.input == true then
             state.input = false
