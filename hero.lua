@@ -81,10 +81,10 @@ function Hero:update(dt)
        self.w = self.w - 4
        self.h = self.h - 4
        if self.w < 1 then
-          self.w = 1
+          self.w = 2
        end
        if self.h < 1 then
-          self.h = 1
+          self.h = 2
        end
        self.timeToShrink = 10
     end
