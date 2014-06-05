@@ -57,10 +57,7 @@ end
 
 function love.keypressed(key) -- love.keypressed работает, когда нажимается кнопка. key - нажатая кнопка
     if key == "escape" then
-        if state.input == true then
-            state.input = false
-            love.keyboard.setTextInput(false)
-        elseif love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift") then -- два метода ввода с клавиатуры можно комбинировать
+        if love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift") then -- два метода ввода с клавиатуры можно комбинировать
             love.event.quit()
         end
    end
