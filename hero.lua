@@ -10,12 +10,13 @@ function Hero.new(x, y, w, h) -- constructor
     local self = setmetatable({
         x = x or 0,
         y = y or 0,
-        w = w or 20,
-        h = h or 20,
+        w = w or 5,
+        h = h or 5,
         speed = {0, 0},
         velocity = 250,
         slowing = 0.4,
-        score = 0
+        score = 0,
+        timeToShrink = 10
     }, Hero)
     return self
 end
@@ -34,15 +35,15 @@ function Hero:truncate(minX, minY, maxX, maxY)
     local maxX = maxX or 800
     local minY = minY or 0
     local maxY = maxY or 600
-    if self.x < minX then 
+    if self.x < minX then
         self.x = minX
         self.speed[1] = 0
     end
-    if self.x > maxX then 
+    if self.x > maxX then
         self.x = maxX
         self.speed[1] = 0
     end
-    if self.y < minY then 
+    if self.y < minY then
         self.y = minY
         self.speed[2] = 0
     end
@@ -75,6 +76,18 @@ function Hero:update(dt)
     self:move(dt)
     self.speed[1] = self.speed[1] - self.speed[1] * self.slowing * dt
     self.speed[2] = self.speed[2] - self.speed[2] * self.slowing * dt
+    self.timeToShrink = self.timeToShrink - dt
+    if self.timeToShrink <= 0 then
+       self.w = self.w - 2
+       self.h = self.h - 2
+       if self.w < 1 then
+          self.w = 1
+       end
+       if self.h < 1 then
+          self.h = 1
+       end
+       self.timeToShrink = 10
+    end
     if gameWindow then
         self:truncateWindow()
     end
@@ -94,6 +107,9 @@ end
 function Hero:collide(obj)
     obj:die()
     self.score = self.score + 1
+    self.w = self.w + 5
+    self.h = self.h + 5
+    self.timeToShrink = self.timeToShrink + 10
     objectAppearTimer = objectAppearTimer - 1
 end
 

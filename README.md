@@ -17,4 +17,4 @@ love path/to/cloned/repo
 
 ## How to play
 
-Try to catch the appearing squares.
+Try to catch the appearing squares. Your hero will grow when it eats a purple square and will shrink over time.
