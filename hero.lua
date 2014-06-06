@@ -98,10 +98,11 @@ end
 function Hero:draw()
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h) -- love.graphics.rectangle() рисует прямоугольник. Варианты первого аргумента fill, line, затем x, y от начала координат, затем ширина и высота
+    love.graphics.setColor(128, 128, 128, 255)
+    love.graphics.rectangle("fill", self.x + self.w / 2 + self.w * ((self.timeToShrink - 10) / 10) / 2, self.y + self.h / 2 + self.h * ((self.timeToShrink - 10) / 10) / 2, self.w * (10 - self.timeToShrink) / 10, self.h * (10 - self.timeToShrink) / 10)
     love.graphics.setColor(255, 0, 0, 255)
     love.graphics.line(self.x + self.w / 2, self.y + self.h / 2, self.x + self.w / 2 + self.speed[1], self.y + self.h / 2 + self.speed[2])
     love.graphics.setColor(0, 255, 0, 255)
-    love.graphics.arc("line", self.x + self.w / 2, self.y + self.h / 2, self.w / 2 + 5, (self.timeToShrink / 10) * 2 * math.pi - math.pi / 2, - math.pi / 2)
 end
 
 function Hero:setControlTable(ct)
