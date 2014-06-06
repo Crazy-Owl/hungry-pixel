@@ -7,6 +7,10 @@ require "settings"
 
 currentDifficulty = easyDifficulty
 
+function togglePause()
+    state['paused'] = not state['paused']
+end
+
 function provide_system_info(x, y)
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.print("SCORE: " .. hero.score, 10, 30)
@@ -39,6 +43,9 @@ function love.load()
 end
 
 function love.update(dt)
+    if state['paused'] then
+        return
+    end
     objectAppearTimer = objectAppearTimer - dt
     if objectAppearTimer <= 0 then
         state:addObject(Point.random())
@@ -56,12 +63,21 @@ function love.draw()
         state.objects[i]:draw()
     end
     provide_system_info(10, 25)
+    if state['paused'] then
+        local font = love.graphics.getFont()
+        local message = "PAUSED (shift-ESC to quit)"
+        local size = font:getWidth(message)
+        local height = font:getHeight()
+        love.graphics.print(message, gameWindow.x / 2 - size / 2, gameWindow.y / 2 - height / 2)
+    end
 end
 
 function love.keypressed(key) -- love.keypressed работает, когда нажимается кнопка. key - нажатая кнопка
     if key == "escape" then
-        if love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift") then -- два метода ввода с клавиатуры можно комбинировать
+        if (love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and state.paused then -- два метода ввода с клавиатуры можно комбинировать
             love.event.quit()
+        else
+            togglePause()
         end
-   end
+    end
 end

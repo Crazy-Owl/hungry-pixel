@@ -10,6 +10,7 @@ setmetatable(State, {
 function State.new()
     local state = setmetatable({
         input = false,
+        paused = false,
         message = "",
         objects = {}
     }, State)
