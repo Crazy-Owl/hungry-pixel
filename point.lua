@@ -13,8 +13,8 @@ function Point.new(x, y, w, h, t)
     local self = setmetatable({
         x = x or 0,
         y = y or 0,
-        w = w or objectWidth,
-        h = h or objectHeight,
+        w = w or currentDifficulty['objectWidth'],
+        h = h or currentDifficulty['objectHeight'],
         t = t or 5,
         alive = true
     }, Point)
@@ -26,7 +26,7 @@ function Point.random()
     local y = 0
     local w = 15
     local h = 15
-    local t = math.random(objectLifespan[1], objectLifespan[2])
+    local t = math.random(currentDifficulty['objectLifespan'][1], currentDifficulty['objectLifespan'][2])
     if gameWindow then
         x = math.random(0, gameWindow.x - w)
         y = math.random(0, gameWindow.y - h)

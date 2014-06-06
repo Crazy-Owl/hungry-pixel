@@ -12,13 +12,13 @@ function Hero.new(x, y) -- constructor
     local self = setmetatable({
         x = x or 0,
         y = y or 0,
-        w = startingHeroWidth,
-        h = startingHeroHeight,
-        speed = startingHeroSpeed,
-        velocity = heroVelocity,
-        slowing = heroSlowing,
+        w = currentDifficulty['startingHeroWidth'],
+        h = currentDifficulty['startingHeroHeight'],
+        speed = currentDifficulty['startingHeroSpeed'],
+        velocity = currentDifficulty['heroVelocity'],
+        slowing = currentDifficulty['heroSlowing'],
         score = 0,
-        timeToShrink = heroTimeToShrink
+        timeToShrink = currentDifficulty['heroTimeToShrink']
     }, Hero)
     return self
 end
@@ -80,15 +80,15 @@ function Hero:update(dt)
     self.speed[2] = self.speed[2] - self.speed[2] * self.slowing * dt
     self.timeToShrink = self.timeToShrink - dt
     if self.timeToShrink <= 0 then
-       self.w = self.w - shrinkRate
-       self.h = self.h - shrinkRate
-       if self.w < minimumWidth then
-          self.w = minimumWidth
+       self.w = self.w - currentDifficulty['shrinkRate']
+       self.h = self.h - currentDifficulty['shrinkRate']
+       if self.w < currentDifficulty['minimumWidth'] then
+          self.w = currentDifficulty['minimumWidth']
        end
-       if self.h < minimumHeight then
-          self.h = minimumHeight
+       if self.h < currentDifficulty['minimumHeight'] then
+          self.h = currentDifficulty['minimumHeight']
        end
-       self.timeToShrink = heroTimeToShrink
+       self.timeToShrink = currentDifficulty['heroTimeToShrink']
     end
     if gameWindow then
         self:truncateWindow()
@@ -96,10 +96,11 @@ function Hero:update(dt)
 end
 
 function Hero:draw()
+    local tts = currentDifficulty['heroTimeToShrink']
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h) -- love.graphics.rectangle() рисует прямоугольник. Варианты первого аргумента fill, line, затем x, y от начала координат, затем ширина и высота
     love.graphics.setColor(128, 128, 128, 255)
-    love.graphics.rectangle("fill", self.x + self.w / 2 + self.w * ((self.timeToShrink - heroTimeToShrink) / heroTimeToShrink) / 2, self.y + self.h / 2 + self.h * ((self.timeToShrink - heroTimeToShrink) / heroTimeToShrink) / 2, self.w * (heroTimeToShrink - self.timeToShrink) / heroTimeToShrink, self.h * (heroTimeToShrink - self.timeToShrink) / heroTimeToShrink)
+    love.graphics.rectangle("fill", self.x + self.w / 2 + self.w * ((self.timeToShrink - tts) / tts) / 2, self.y + self.h / 2 + self.h * ((self.timeToShrink - tts) / tts) / 2, self.w * (tts - self.timeToShrink) / tts, self.h * (tts - self.timeToShrink) / tts)
     love.graphics.setColor(255, 0, 0, 255)
     love.graphics.line(self.x + self.w / 2, self.y + self.h / 2, self.x + self.w / 2 + self.speed[1], self.y + self.h / 2 + self.speed[2])
     love.graphics.setColor(0, 255, 0, 255)
@@ -112,9 +113,9 @@ end
 function Hero:collide(obj)
     obj:die()
     self.score = self.score + 1
-    self.w = self.w + growRate
-    self.h = self.h + growRate
-    self.timeToShrink = heroTimeToShrink
+    self.w = self.w + currentDifficulty['growRate']
+    self.h = self.h + currentDifficulty['growRate']
+    self.timeToShrink = currentDifficulty['heroTimeToShrink']
     objectAppearTimer = objectAppearTimer - 1
 end
 

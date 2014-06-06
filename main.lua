@@ -5,6 +5,8 @@ require "point"
 require "math"
 require "settings"
 
+currentDifficulty = easyDifficulty
+
 function provide_system_info(x, y)
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.print("SCORE: " .. hero.score, 10, 30)
@@ -40,7 +42,7 @@ function love.update(dt)
     objectAppearTimer = objectAppearTimer - dt
     if objectAppearTimer <= 0 then
         state:addObject(Point.random())
-        objectAppearTimer = math.random(objectAppearRange[1], objectAppearRange[2])
+        objectAppearTimer = math.random(currentDifficulty['objectAppearRange'][1], currentDifficulty['objectAppearRange'][2])
     end
     hero:update(dt)
     state:update(dt)
