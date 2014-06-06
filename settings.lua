@@ -3,7 +3,7 @@
 -- Hero section
 startingHeroWidth = 5
 startingHeroHeight = 5
-startingSpeed = {0, 0}
+startingHeroSpeed = {0, 0}
 heroVelocity = 250
 heroSlowing = 0.4
 heroTimeToShrink = 10
