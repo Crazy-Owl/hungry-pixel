@@ -1,3 +1,5 @@
+require "math"
+
 Hero = {} -- table to hold all class variables
 Hero.__index = Hero -- lookup in this table
 setmetatable(Hero, {
@@ -98,6 +100,8 @@ function Hero:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h) -- love.graphics.rectangle() рисует прямоугольник. Варианты первого аргумента fill, line, затем x, y от начала координат, затем ширина и высота
     love.graphics.setColor(255, 0, 0, 255)
     love.graphics.line(self.x + self.w / 2, self.y + self.h / 2, self.x + self.w / 2 + self.speed[1], self.y + self.h / 2 + self.speed[2])
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.arc("line", self.x + self.w / 2, self.y + self.h / 2, self.w / 2 + 5, (self.timeToShrink / 10) * 2 * math.pi - math.pi / 2, - math.pi / 2)
 end
 
 function Hero:setControlTable(ct)
@@ -107,8 +111,8 @@ end
 function Hero:collide(obj)
     obj:die()
     self.score = self.score + 1
-    self.w = self.w + 5
-    self.h = self.h + 5
+    self.w = self.w + 2
+    self.h = self.h + 2
     self.timeToShrink = 10
     objectAppearTimer = objectAppearTimer - 1
 end
