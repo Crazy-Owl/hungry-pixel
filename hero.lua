@@ -8,17 +8,17 @@ setmetatable(Hero, {
     end
 })
 
-function Hero.new(x, y, w, h) -- constructor
+function Hero.new(x, y) -- constructor
     local self = setmetatable({
         x = x or 0,
         y = y or 0,
-        w = w or 5,
-        h = h or 5,
-        speed = {0, 0},
-        velocity = 250,
-        slowing = 0.4,
+        w = startingHeroWidth,
+        h = startingHeroHeight,
+        speed = startingHeroSpeed,
+        velocity = heroVelocity,
+        slowing = heroSlowing,
         score = 0,
-        timeToShrink = 10
+        timeToShrink = heroTimeToShrink
     }, Hero)
     return self
 end
@@ -80,15 +80,15 @@ function Hero:update(dt)
     self.speed[2] = self.speed[2] - self.speed[2] * self.slowing * dt
     self.timeToShrink = self.timeToShrink - dt
     if self.timeToShrink <= 0 then
-       self.w = self.w - 4
-       self.h = self.h - 4
-       if self.w < 1 then
-          self.w = 2
+       self.w = self.w - shrinkRate
+       self.h = self.h - shrinkRate
+       if self.w < minimumWidth then
+          self.w = minimumWidth
        end
-       if self.h < 1 then
-          self.h = 2
+       if self.h < minimumHeight then
+          self.h = minimumHeight
        end
-       self.timeToShrink = 10
+       self.timeToShrink = heroTimeToShrink
     end
     if gameWindow then
         self:truncateWindow()
@@ -99,7 +99,7 @@ function Hero:draw()
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h) -- love.graphics.rectangle() рисует прямоугольник. Варианты первого аргумента fill, line, затем x, y от начала координат, затем ширина и высота
     love.graphics.setColor(128, 128, 128, 255)
-    love.graphics.rectangle("fill", self.x + self.w / 2 + self.w * ((self.timeToShrink - 10) / 10) / 2, self.y + self.h / 2 + self.h * ((self.timeToShrink - 10) / 10) / 2, self.w * (10 - self.timeToShrink) / 10, self.h * (10 - self.timeToShrink) / 10)
+    love.graphics.rectangle("fill", self.x + self.w / 2 + self.w * ((self.timeToShrink - heroTimeToShrink) / heroTimeToShrink) / 2, self.y + self.h / 2 + self.h * ((self.timeToShrink - heroTimeToShrink) / heroTimeToShrink) / 2, self.w * (heroTimeToShrink - self.timeToShrink) / heroTimeToShrink, self.h * (heroTimeToShrink - self.timeToShrink) / heroTimeToShrink)
     love.graphics.setColor(255, 0, 0, 255)
     love.graphics.line(self.x + self.w / 2, self.y + self.h / 2, self.x + self.w / 2 + self.speed[1], self.y + self.h / 2 + self.speed[2])
     love.graphics.setColor(0, 255, 0, 255)
@@ -112,9 +112,9 @@ end
 function Hero:collide(obj)
     obj:die()
     self.score = self.score + 1
-    self.w = self.w + 2
-    self.h = self.h + 2
-    self.timeToShrink = 10
+    self.w = self.w + growRate
+    self.h = self.h + growRate
+    self.timeToShrink = heroTimeToShrink
     objectAppearTimer = objectAppearTimer - 1
 end
 

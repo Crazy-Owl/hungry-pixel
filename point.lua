@@ -1,4 +1,5 @@
 require "math"
+require "settings"
 
 Point = {}
 Point.__index = Point
@@ -12,8 +13,8 @@ function Point.new(x, y, w, h, t)
     local self = setmetatable({
         x = x or 0,
         y = y or 0,
-        w = w or 15,
-        h = h or 15,
+        w = w or objectWidth,
+        h = h or objectHeight,
         t = t or 5,
         alive = true
     }, Point)
@@ -25,7 +26,7 @@ function Point.random()
     local y = 0
     local w = 15
     local h = 15
-    local t = math.random(5, 15)
+    local t = math.random(objectLifespan[1], objectLifespan[2])
     if gameWindow then
         x = math.random(0, gameWindow.x - w)
         y = math.random(0, gameWindow.y - h)
