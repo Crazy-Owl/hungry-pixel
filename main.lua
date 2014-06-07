@@ -6,14 +6,19 @@ require "math"
 require "settings"
 
 currentDifficulty = easyDifficulty
+currentState = nil
 local hero
 local controlTable
 
 
 function provide_system_info(x, y)
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.print("SCORE: " .. hero.score, 10, 30)
-    love.graphics.print("NEXT: " .. math.ceil(objectAppearTimer), 10, 45)
+    if currentState.hero then
+        love.graphics.print("SCORE: " .. currentState.hero.score, 10, 30)
+    end
+    if currentState.objectAppearTimer then
+        love.graphics.print("NEXT: " .. math.ceil(currentState.objectAppearTimer), 10, 45)
+    end
     --[[
         love.time.getTime() returns time in seconds
     ]]
@@ -25,7 +30,7 @@ function draw_current_text(x, y)
 end
 
 function love.load()
-    hero = Hero(math.random(100, 300), math.random(100, 300))
+    local hero = Hero(math.random(100, 300), math.random(100, 300))
     controlTable = {
         left = {-1, 0},
         right = {1, 0},
@@ -35,46 +40,25 @@ function love.load()
     hero:setControlTable(controlTable)
     gameWindow = Window.new(800, 600)
     gameWindow:setMode()
-    state = State.new()
+    currentState = State.new()
+    currentState.hero = hero
     love.keyboard.setKeyRepeat(true) -- setKeyRepeat enables or disables key repeat mode
     love.keyboard.setTextInput(false) -- setTextInput enables or disables input mode
-    objectAppearTimer = 0
 end
 
 function love.update(dt)
-    if state['paused'] then
-        return
-    end
-    objectAppearTimer = objectAppearTimer - dt
-    if objectAppearTimer <= 0 then
-        state:addObject(Point.random())
-        objectAppearTimer = math.random(currentDifficulty['objectAppearRange'][1], currentDifficulty['objectAppearRange'][2])
-    end
-    hero:update(dt)
-    state:update(dt)
-    hero:checkCollision(state.objects)
-    local isGameFinished = state:checkForFinish()
+    currentState:update(dt)
+    local isGameFinished = currentState:checkForFinish()
     if isGameFinished then
         love.event.quit()
     end
 end
 
 function love.draw()
-    -- draw hero
-    hero:draw()
-    for i = 1, #state.objects do
-        state.objects[i]:draw()
-    end
+    currentState:draw()
     provide_system_info(10, 25)
-    if state['paused'] then
-        local font = love.graphics.getFont()
-        local message = "PAUSED (shift-ESC to quit)"
-        local size = font:getWidth(message)
-        local height = font:getHeight()
-        love.graphics.print(message, gameWindow.x / 2 - size / 2, gameWindow.y / 2 - height / 2)
-    end
 end
 
 function love.keypressed(key) -- love.keypressed работает, когда нажимается кнопка. key - нажатая кнопка
-    state:keypressed(key)
+    currentState:keypressed(key)
 end

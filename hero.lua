@@ -116,7 +116,7 @@ function Hero:collide(obj)
     self.w = self.w + currentDifficulty['growRate']
     self.h = self.h + currentDifficulty['growRate']
     self.timeToShrink = currentDifficulty['heroTimeToShrink']
-    objectAppearTimer = objectAppearTimer - 1
+    currentState.objectAppearTimer = currentState.objectAppearTimer - 1
 end
 
 function Hero:checkCollision(objectList)
