@@ -11,7 +11,7 @@ currentState = nil
 gameWindow = nil
 
 
-function provide_system_info(x, y)
+function provide_system_info()
     love.graphics.setColor(255, 255, 255, 255)
     if currentState.hero then
         love.graphics.print("SCORE: " .. currentState.hero.score, 10, 30)
