@@ -31,3 +31,17 @@ function State:update(dt)
     end
     self.objects = filter(self.objects, function(obj) return obj.alive end)
 end
+
+function State:togglePause()
+    self.paused = not self.paused
+end
+
+function State:keypressed(key)
+    if key == "escape" then
+        if (love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and state.paused then -- два метода ввода с клавиатуры можно комбинировать
+            love.event.quit()
+        else
+            self:togglePause()
+        end
+    end
+end

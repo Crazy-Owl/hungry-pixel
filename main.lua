@@ -6,10 +6,9 @@ require "math"
 require "settings"
 
 currentDifficulty = easyDifficulty
+local hero
+local controlTable
 
-function togglePause()
-    state['paused'] = not state['paused']
-end
 
 function provide_system_info(x, y)
     love.graphics.setColor(255, 255, 255, 255)
@@ -73,11 +72,5 @@ function love.draw()
 end
 
 function love.keypressed(key) -- love.keypressed работает, когда нажимается кнопка. key - нажатая кнопка
-    if key == "escape" then
-        if (love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and state.paused then -- два метода ввода с клавиатуры можно комбинировать
-            love.event.quit()
-        else
-            togglePause()
-        end
-    end
+    state:keypressed(key)
 end
