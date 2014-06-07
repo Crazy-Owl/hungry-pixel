@@ -7,7 +7,6 @@ require "settings"
 
 currentDifficulty = easyDifficulty
 currentState = nil
-currentState = nil
 gameWindow = nil
 
 
@@ -22,11 +21,6 @@ function provide_system_info()
     --[[
         love.time.getTime() returns time in seconds
     ]]
-end
-
-function draw_current_text(x, y)
-    love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.print(stat.message, x, y)
 end
 
 function love.load()
