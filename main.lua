@@ -7,8 +7,8 @@ require "settings"
 
 currentDifficulty = easyDifficulty
 currentState = nil
-local hero
-local controlTable
+currentState = nil
+gameWindow = nil
 
 
 function provide_system_info(x, y)
@@ -31,7 +31,7 @@ end
 
 function love.load()
     local hero = Hero(math.random(100, 300), math.random(100, 300))
-    controlTable = {
+    local controlTable = {
         left = {-1, 0},
         right = {1, 0},
         up = {0, -1},
