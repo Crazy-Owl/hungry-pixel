@@ -53,6 +53,10 @@ function love.update(dt)
     hero:update(dt)
     state:update(dt)
     hero:checkCollision(state.objects)
+    local isGameFinished = state:checkForFinish()
+    if isGameFinished then
+        love.event.quit()
+    end
 end
 
 function love.draw()

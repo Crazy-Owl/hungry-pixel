@@ -45,3 +45,7 @@ function State:keypressed(key)
         end
     end
 end
+
+function State:checkForFinish()
+    return false
+end
