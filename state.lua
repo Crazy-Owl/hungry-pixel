@@ -1,4 +1,5 @@
 require "util"
+require "obstacle"
 require "point"
 require "hero"
 State = {}
@@ -16,7 +17,8 @@ function State.new()
         message = "",
         objects = {},
         hero = nil,
-        objectAppearTimer = 0
+        objectAppearTimer = 0,
+        finished = false
     }, State)
     return state
 end
@@ -29,8 +31,31 @@ function State:addObject(obj)
     table.insert(self.objects, obj)
 end
 
+function State:prepareArena()
+    self:addObject(Obstacle.new(-50, -50, 51, windowHeight + 100))
+    self:addObject(Obstacle.new(-50, -50, windowWidth + 100, 51))
+    self:addObject(Obstacle.new(windowWidth - 1, -50, 51, windowHeight + 100))
+    self:addObject(Obstacle.new(-50, windowHeight - 1, windowWidth + 100, 51))
+end
+
+function State:newGame()
+    local hero = Hero(math.random(100, 300), math.random(100, 300))
+    local controlTable = {
+        left = {-1, 0},
+        right = {1, 0},
+        up = {0, -1},
+        down = {0, 1}
+    }
+    hero:setControlTable(controlTable)
+    self.hero = hero
+    self.objects = {}
+    self.objectAppearTimer = 0
+    self.finished = false
+    self:prepareArena()
+end
+
 function State:update(dt)
-    if self.paused then
+    if self.paused or self.finished then
         return
     end
     self.objectAppearTimer = self.objectAppearTimer - dt
@@ -51,6 +76,15 @@ function State:togglePause()
 end
 
 function State:draw()
+    if self.finished then
+        local font = love.graphics.getFont()
+        local message = "YOU LOST (n will begin new game)"
+        local size = font:getWidth(message)
+        local height = font:getHeight()
+        love.graphics.setColor(255, 255, 255, 255)
+        love.graphics.print(message, gameWindow.x / 2 - size / 2, gameWindow.y / 2 - height / 2)
+        return
+    end
     self.hero:draw()
     for i = 1, #self.objects do
         self.objects[i]:draw()
@@ -73,9 +107,15 @@ function State:keypressed(key)
         else
             self:togglePause()
         end
+    elseif key == "n" then
+        self:newGame()
     end
 end
 
 function State:checkForFinish()
-    return false
+    if self.hero.w <= 2 then
+        return -1
+    else
+        return 0
+    end
 end

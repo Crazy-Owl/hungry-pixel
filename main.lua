@@ -25,22 +25,10 @@ function provide_system_info()
 end
 
 function love.load()
-    local hero = Hero(math.random(100, 300), math.random(100, 300))
-    local controlTable = {
-        left = {-1, 0},
-        right = {1, 0},
-        up = {0, -1},
-        down = {0, 1}
-    }
-    hero:setControlTable(controlTable)
     gameWindow = Window.new(windowWidth, windowHeight)
     gameWindow:setMode()
     currentState = State.new()
-    currentState.hero = hero
-    currentState:addObject(Obstacle.new(-50, -50, 51, windowHeight + 100))
-    currentState:addObject(Obstacle.new(-50, -50, windowWidth + 100, 51))
-    currentState:addObject(Obstacle.new(windowWidth - 1, -50, 51, windowHeight + 100))
-    currentState:addObject(Obstacle.new(-50, windowHeight - 1, windowWidth + 100, 51))
+    currentState:newGame()
     love.keyboard.setKeyRepeat(true) -- setKeyRepeat enables or disables key repeat mode
     love.keyboard.setTextInput(false) -- setTextInput enables or disables input mode
 end
@@ -48,8 +36,8 @@ end
 function love.update(dt)
     currentState:update(dt)
     local isGameFinished = currentState:checkForFinish()
-    if isGameFinished then
-        love.event.quit()
+    if isGameFinished < 0 then
+        currentState.finished = true
     end
 end
 
