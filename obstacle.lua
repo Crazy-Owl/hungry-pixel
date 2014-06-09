@@ -11,7 +11,8 @@ function Obstacle.new(x, y, w, h)
         x = x,
         y = y,
         w = w,
-        h = h
+        h = h,
+        type = "obstacle"
     }, Obstacle)
 end
 

@@ -16,7 +16,8 @@ function Point.new(x, y, w, h, t)
         w = w or currentDifficulty['objectWidth'],
         h = h or currentDifficulty['objectHeight'],
         t = t or 5,
-        alive = true
+        alive = true,
+        type = "point"
     }, Point)
    return self
 end
