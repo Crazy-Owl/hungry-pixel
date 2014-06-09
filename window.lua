@@ -1,9 +1,10 @@
+require "settings"
 Window = {}
 Window.__index = Window
 
 function Window.new(w, h)
-    local w = w or 800
-    local h = h or 600
+    local w = w or windowWidth
+    local h = h or windowHeight
     local window = {
         x = w,
         y = h

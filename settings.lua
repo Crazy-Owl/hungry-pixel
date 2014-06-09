@@ -1,5 +1,8 @@
 -- useful constants
 
+windowHeight = 900
+windowWidth = 1200
+
 easyDifficulty = {
     -- Hero section
     startingHeroWidth = 5,

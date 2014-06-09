@@ -32,7 +32,7 @@ function love.load()
         down = {0, 1}
     }
     hero:setControlTable(controlTable)
-    gameWindow = Window.new(800, 600)
+    gameWindow = Window.new(windowWidth, windowHeight)
     gameWindow:setMode()
     currentState = State.new()
     currentState.hero = hero
