@@ -43,7 +43,7 @@ function State:update(dt)
     for i = 1, #self.objects do
         self.objects[i]:update(dt)
     end
-    self.objects = filter(self.objects, function(obj) return obj.alive end)
+    self.objects = filter(self.objects, function(obj) return (obj.alive or obj.type == "obstacle") end)
 end
 
 function State:togglePause()

@@ -81,8 +81,7 @@ function Hero:update(dt)
     self.speed[2] = self.speed[2] - self.speed[2] * self.slowing * dt
     self.timeToShrink = self.timeToShrink - dt
     if self.timeToShrink <= 0 then
-       self.w = self.w - currentDifficulty['shrinkRate']
-       self.h = self.h - currentDifficulty['shrinkRate']
+       self:shrink()
        if self.w < currentDifficulty['minimumWidth'] then
           self.w = currentDifficulty['minimumWidth']
        end
@@ -91,9 +90,9 @@ function Hero:update(dt)
        end
        self.timeToShrink = currentDifficulty['heroTimeToShrink']
     end
-    if gameWindow then
-        self:truncateWindow()
-    end
+--    if gameWindow then
+--        self:truncateWindow()
+--    end
 end
 
 function Hero:draw()
@@ -111,13 +110,60 @@ function Hero:setControlTable(ct)
     self.controlTable = ct
 end
 
+function Hero:shrink()
+    self.w = self.w - currentDifficulty['shrinkRate']
+    if self.w < 2 then self.w = 2 end
+    self.h = self.h - currentDifficulty['shrinkRate']
+    if self.h < 2 then self.h = 2 end
+end
+
 function Hero:collide(obj)
-    obj:die()
-    self.score = self.score + 1
-    self.w = self.w + currentDifficulty['growRate']
-    self.h = self.h + currentDifficulty['growRate']
-    self.timeToShrink = currentDifficulty['heroTimeToShrink']
-    currentState.objectAppearTimer = currentState.objectAppearTimer - 1
+    if obj.type == "point" then
+        obj:die()
+        self.score = self.score + 1
+        self.w = self.w + currentDifficulty['growRate']
+        self.h = self.h + currentDifficulty['growRate']
+        self.timeToShrink = currentDifficulty['heroTimeToShrink']
+        currentState.objectAppearTimer = currentState.objectAppearTimer - 1
+    elseif obj.type == "obstacle" then
+        self:shrink()
+        local x, y, w, h
+        if self.x >= obj.x and self.x + self.w >= obj.x + obj.w then
+            x = self.x
+            w = obj.x + obj.w - self.x
+        elseif obj.x >= self.x and obj.x + obj.w >= self.x + self.w then
+            x = obj.x
+            w = self.x + self.w - obj.x
+        elseif self.x >= obj.x and self.x + self.w <= obj.x + obj.w then
+            x = self.x
+            w = self.w
+        elseif obj.x >= self.x and obj.x + obj.w <= self.x + self.w then
+            x = obj.x
+            w = obj.w
+        end
+        if self.y >= obj.y and self.y + self.h >= obj.y + obj.h then
+            y = self.y
+            h = obj.y + obj.h - self.y
+        elseif obj.y >= self.y and obj.y + obj.h >= self.y + self.h then
+            y = obj.y
+            h = self.y + self.h - obj.y
+        elseif self.y >= obj.y and self.y + self.h <= obj.y + obj.h then
+            y = self.y
+            h = self.h
+        elseif obj.y >= self.y and obj.y + obj.h <= self.y + self.h then
+            y = obj.y
+            h = obj.h
+        end
+        if h == w then
+            self.speed = {-self.speed[1], -self.speed[2]}
+        elseif h < w then
+            self.speed = {self.speed[1], -self.speed[2]}
+        else
+            self.speed = {-self.speed[1], self.speed[2]}
+        end
+        self.x = self.x + sign(self.speed[1]) * w
+        self.y = self.y + sign(self.speed[2]) * h
+    end
 end
 
 function Hero:checkCollision(objectList)

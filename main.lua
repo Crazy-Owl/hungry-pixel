@@ -4,6 +4,7 @@ require "window"
 require "point"
 require "math"
 require "settings"
+require "obstacle"
 
 currentDifficulty = easyDifficulty
 currentState = nil
@@ -36,6 +37,10 @@ function love.load()
     gameWindow:setMode()
     currentState = State.new()
     currentState.hero = hero
+    currentState:addObject(Obstacle.new(-50, -50, 51, windowHeight + 100))
+    currentState:addObject(Obstacle.new(-50, -50, windowWidth + 100, 51))
+    currentState:addObject(Obstacle.new(windowWidth - 1, -50, 51, windowHeight + 100))
+    currentState:addObject(Obstacle.new(-50, windowHeight - 1, windowWidth + 100, 51))
     love.keyboard.setKeyRepeat(true) -- setKeyRepeat enables or disables key repeat mode
     love.keyboard.setTextInput(false) -- setTextInput enables or disables input mode
 end

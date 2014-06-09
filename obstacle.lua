@@ -14,6 +14,7 @@ function Obstacle.new(x, y, w, h)
         h = h,
         type = "obstacle"
     }, Obstacle)
+    return self
 end
 
 function Obstacle:update()
@@ -21,6 +22,6 @@ function Obstacle:update()
 end
 
 function Obstacle:draw()
-    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.setColor(255, 0, 0, 255)
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
 end
