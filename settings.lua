@@ -19,5 +19,6 @@ easyDifficulty = {
     objectAppearRange = {3, 7},
     objectLifespan = {6, 15},
     objectWidth = 10,
-    objectHeight = 10
+    objectHeight = 10,
+    displayRuler = true
 }
