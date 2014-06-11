@@ -18,6 +18,7 @@ function State.new()
         objects = {},
         hero = nil,
         objectAppearTimer = 0,
+        obstacleAppearTimer = 20,
         finished = false
     }, State)
     return state
@@ -62,6 +63,11 @@ function State:update(dt)
     if self.objectAppearTimer <= 0 then
         self:addObject(Point.random())
         self.objectAppearTimer = math.random(currentDifficulty['objectAppearRange'][1], currentDifficulty['objectAppearRange'][2])
+    end
+    self.obstacleAppearTimer = self.obstacleAppearTimer - dt
+    if self.obstacleAppearTimer <= 0 then
+        self:addObject(Obstacle.random())
+        self.obstacleAppearTimer = math.random(currentDifficulty['obstacleAppearRange'][1], currentDifficulty['obstacleAppearRange'][2])
     end
     self.hero:update(dt)
     self.hero:checkCollision(self.objects)

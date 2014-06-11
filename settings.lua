@@ -17,8 +17,11 @@ easyDifficulty = {
     minimumHeight = 2,
     -- gameplay section
     objectAppearRange = {3, 7},
+    obstacleAppearRange = {15, 30},
     objectLifespan = {6, 15},
     objectWidth = 10,
     objectHeight = 10,
+    obstacleWidth = 20,
+    obstacleHeight = 20,
     displayRuler = true
 }

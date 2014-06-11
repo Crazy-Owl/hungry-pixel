@@ -17,6 +17,12 @@ function Obstacle.new(x, y, w, h)
     return self
 end
 
+function Obstacle.random()
+    local x = math.random(0, windowHeight)
+    local y = math.random(0, windowHeight)
+    return Obstacle.new(x, y, currentDifficulty.obstacleWidth, currentDifficulty.obstacleHeight)
+end
+
 function Obstacle:update()
     return
 end
