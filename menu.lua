@@ -11,14 +11,14 @@ setmetatable(Menu, {
 function Menu.new()
     local menuState = setmetatable({
         items = {},
-        currentIndex = 0
+        currentIndex = 1
     }, Menu)
     return menuState
 end
 
 function Menu:setItems(itemsTable)
     self.items = itemsTable
-    self.currentIndex = 0
+    self.currentIndex = 1
 end
 
 function Menu:draw()
@@ -44,5 +44,15 @@ function Menu:update(dt)
 end
 
 function Menu:keypressed(key)
-   return
+   if key == "down" then
+      self.currentIndex = self.currentIndex + 1
+      if self.currentIndex > #self.items then
+         self.currentIndex = 1
+      end
+   elseif key == "up" then
+      self.currentIndex = self.currentIndex - 1
+      if self.currentIndex <= 0 then
+         self.currentIndex = #self.items
+      end
+   end
 end
