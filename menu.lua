@@ -1,3 +1,5 @@
+require "settings"
+
 Menu = {}
 Menu.__index = Menu
 setmetatable(Menu, {
@@ -16,12 +18,31 @@ end
 
 function Menu:setItems(itemsTable)
     self.items = itemsTable
+    self.currentIndex = 0
 end
 
 function Menu:draw()
-    return
+   love.graphics.setColor(255, 255, 255, 255)
+    local font = love.graphics.getFont()
+    local height = font:getHeight() * #self.items
+    local maxSize = 0
+    for i = 1, #self.items do
+       local messageSize = font:getWidth(self.items[i])
+       if maxSize < messageSize then
+          maxSize = messageSize
+       end
+    end
+    local x = (windowWidth - maxSize) / 2
+    local y = (windowHeight - height) / 2
+    for i = 1, #self.items do
+       love.graphics.print(self.items[i], x, y + (i - 1) * font.getHeigh())
+    end
 end
 
 function Menu:update(dt)
     return
+end
+
+function Menu:keypressed(key)
+   return
 end
