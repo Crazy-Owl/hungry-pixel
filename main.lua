@@ -1,5 +1,6 @@
 require "hero"
 require "state"
+require "menu"
 require "window"
 require "point"
 require "math"
@@ -24,11 +25,29 @@ function provide_system_info()
     ]]
 end
 
+local mainMenuItems = {
+   {
+      "Start new game",
+      function()
+            currentState = State.new();
+            currentState:newGame();
+      end
+   },
+   {
+      "Exit game",
+      function()
+            love.event.quit()
+      end
+   }
+}
+
+mainMenu = Menu.new()
+mainMenu:setItems(mainMenuItems)
+
 function love.load()
     gameWindow = Window.new(windowWidth, windowHeight)
     gameWindow:setMode()
-    currentState = State.new()
-    currentState:newGame()
+    currentState = mainMenu
     love.keyboard.setKeyRepeat(true) -- setKeyRepeat enables or disables key repeat mode
     love.keyboard.setTextInput(false) -- setTextInput enables or disables input mode
 end

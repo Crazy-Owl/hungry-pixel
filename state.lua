@@ -97,7 +97,7 @@ function State:draw()
     end
     if self.paused then
         local font = love.graphics.getFont()
-        local message = "PAUSED (shift-ESC to quit)"
+        local message = "PAUSED (shift-ESC to quit to menu)"
         local size = font:getWidth(message)
         local height = font:getHeight()
         love.graphics.setColor(255, 255, 255, 255)
@@ -109,7 +109,7 @@ end
 function State:keypressed(key)
     if key == "escape" then
         if (love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and self.paused then -- два метода ввода с клавиатуры можно комбинировать
-            love.event.quit()
+           currentState = mainMenu
         else
             self:togglePause()
         end
