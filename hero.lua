@@ -19,6 +19,7 @@ function Hero.new(x, y) -- constructor
         slowing = currentDifficulty['heroSlowing'],
         score = 0,
         timeToShrink = currentDifficulty['heroTimeToShrink'],
+        size = 0,
         type = "hero"
     }, Hero)
     return self
@@ -66,44 +67,47 @@ function Hero:truncateWindow(window)
 end
 
 function Hero:update(dt)
-    local velocity = self.velocity
-    if self.controlTable then
-        for key, value in pairs(self.controlTable) do
-            if love.keyboard.isDown(key) then
-                local v1 = dt * velocity * value[1] + self.speed[1]
-                local v2 = dt * velocity * value[2] + self.speed[2]
-                self.speed = {v1, v2}
-            end
-        end
+   local velocity = self.velocity
+   if self.controlTable then
+      for key, value in pairs(self.controlTable) do
+         if love.keyboard.isDown(key) then
+            local v1 = dt * velocity * value[1] + self.speed[1]
+            local v2 = dt * velocity * value[2] + self.speed[2]
+            self.speed = {v1, v2}
+         end
+      end
    end
-    self:move(dt)
-    self.speed[1] = self.speed[1] - self.speed[1] * self.slowing * dt
-    self.speed[2] = self.speed[2] - self.speed[2] * self.slowing * dt
-    self.timeToShrink = self.timeToShrink - dt
-    if self.timeToShrink <= 0 then
-       self:shrink()
-       if self.w < currentDifficulty['minimumWidth'] then
-          self.w = currentDifficulty['minimumWidth']
-       end
-       if self.h < currentDifficulty['minimumHeight'] then
-          self.h = currentDifficulty['minimumHeight']
-       end
-       self.timeToShrink = currentDifficulty['heroTimeToShrink']
-    end
---    if gameWindow then
---        self:truncateWindow()
---    end
+   self:move(dt)
+   self.speed[1] = self.speed[1] - self.speed[1] * self.slowing * dt
+   self.speed[2] = self.speed[2] - self.speed[2] * self.slowing * dt
+   self.timeToShrink = self.timeToShrink - dt
+   if self.timeToShrink <= 0 then
+      self:shrink()
+      if self.w < currentDifficulty['minimumWidth'] then
+         self.w = currentDifficulty['minimumWidth']
+      end
+      if self.h < currentDifficulty['minimumHeight'] then
+         self.h = currentDifficulty['minimumHeight']
+      end
+      self.timeToShrink = currentDifficulty['heroTimeToShrink']
+   end
+   self:updateVelocity()
+   --    if gameWindow then
+   --        self:truncateWindow()
+   --    end
 end
 
 function Hero:draw()
     local tts = currentDifficulty['heroTimeToShrink']
+    local w = self.w + self.size
+    local h = self.h + self.size
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h) -- love.graphics.rectangle() рисует прямоугольник. Варианты первого аргумента fill, line, затем x, y от начала координат, затем ширина и высота
+    love.graphics.rectangle("fill", self.x, self.y, w, h) -- love.graphics.rectangle() рисует прямоугольник. Варианты первого аргумента fill, line, затем x, y от начала координат, затем ширина и высота
     love.graphics.setColor(128, 128, 128, 255)
-    love.graphics.rectangle("fill", self.x + self.w / 2 + self.w * ((self.timeToShrink - tts) / tts) / 2, self.y + self.h / 2 + self.h * ((self.timeToShrink - tts) / tts) / 2, self.w * (tts - self.timeToShrink) / tts, self.h * (tts - self.timeToShrink) / tts)
+    love.graphics.rectangle("fill", self.x + w / 2 + w * ((self.timeToShrink - tts) / tts) / 2, self.y + h / 2 + h * ((self.timeToShrink - tts) / tts) / 2, w * (tts - self.timeToShrink) / tts, h * (tts - self.timeToShrink) / tts)
     if currentDifficulty['displayRuler'] then
        love.graphics.setColor(255, 0, 0, 255)
-       love.graphics.line(self.x + self.w / 2, self.y + self.h / 2, self.x + self.w / 2 + self.speed[1], self.y + self.h / 2 + self.speed[2])
+       love.graphics.line(self.x + w / 2, self.y + h / 2, self.x + w / 2 + self.speed[1], self.y + h / 2 + self.speed[2])
     end
 end
 
@@ -112,46 +116,45 @@ function Hero:setControlTable(ct)
 end
 
 function Hero:shrink()
-    self.w = self.w - currentDifficulty['shrinkRate']
-    if self.w < 2 then self.w = 2 end
-    self.h = self.h - currentDifficulty['shrinkRate']
-    if self.h < 2 then self.h = 2 end
+   self.size = self.size - currentDifficulty['shrinkRate']
+   if self.size < 2 then self.size = 2 end
 end
 
 function Hero:collide(obj)
     if obj.type == "point" then
         obj:die()
         self.score = self.score + 1
-        self.w = self.w + currentDifficulty['growRate']
-        self.h = self.h + currentDifficulty['growRate']
+        self.size = self.size + currentDifficulty['growRate']
         self.timeToShrink = currentDifficulty['heroTimeToShrink']
         currentState.objectAppearTimer = currentState.objectAppearTimer - 1
     elseif obj.type == "obstacle" then
         self:shrink()
         local x, y, w, h
-        if self.x >= obj.x and self.x + self.w >= obj.x + obj.w then
+        local selfW = self.w + self.size
+        local selfH = self.h + self.size
+        if self.x >= obj.x and self.x + selfW >= obj.x + obj.w then
             x = self.x
             w = obj.x + obj.w - self.x
-        elseif obj.x >= self.x and obj.x + obj.w >= self.x + self.w then
+        elseif obj.x >= self.x and obj.x + obj.w >= self.x + selfW then
             x = obj.x
-            w = self.x + self.w - obj.x
-        elseif self.x >= obj.x and self.x + self.w <= obj.x + obj.w then
+            w = self.x + selfW - obj.x
+        elseif self.x >= obj.x and self.x + selfW <= obj.x + obj.w then
             x = self.x
-            w = self.w
-        elseif obj.x >= self.x and obj.x + obj.w <= self.x + self.w then
+            w = selfW
+        elseif obj.x >= self.x and obj.x + obj.w <= self.x + selfW then
             x = obj.x
             w = obj.w
         end
-        if self.y >= obj.y and self.y + self.h >= obj.y + obj.h then
+        if self.y >= obj.y and self.y + selfH >= obj.y + obj.h then
             y = self.y
             h = obj.y + obj.h - self.y
-        elseif obj.y >= self.y and obj.y + obj.h >= self.y + self.h then
+        elseif obj.y >= self.y and obj.y + obj.h >= self.y + selfH then
             y = obj.y
-            h = self.y + self.h - obj.y
-        elseif self.y >= obj.y and self.y + self.h <= obj.y + obj.h then
+            h = self.y + selfH - obj.y
+        elseif self.y >= obj.y and self.y + selfH <= obj.y + obj.h then
             y = self.y
-            h = self.h
-        elseif obj.y >= self.y and obj.y + obj.h <= self.y + self.h then
+            h = selfH
+        elseif obj.y >= self.y and obj.y + obj.h <= self.y + selfH then
             y = obj.y
             h = obj.h
         end
@@ -168,10 +171,19 @@ function Hero:collide(obj)
 end
 
 function Hero:checkCollision(objectList)
-    for i = 1, #objectList do
-        local obj = objectList[i]
-        if (self.x + self.w >= obj.x and self.x <= obj.x + obj.w) and (self.y + self.h >= obj.y and self.y <= obj.y + obj.h) then
-            self:collide(obj)
-        end
-    end
+   local w = self.w + self.size
+   local h = self.h + self.size
+   for i = 1, #objectList do
+      local obj = objectList[i]
+      if (self.x + w >= obj.x and self.x <= obj.x + obj.w) and (self.y + h >= obj.y and self.y <= obj.y + obj.h) then
+         self:collide(obj)
+      end
+   end
+end
+
+function Hero:updateVelocity()
+   local size = self.size
+   local maxSize = currentDifficulty['maxSize']
+   if size >  maxSize then size = maxSize end
+   self.velocity = 250 - 200 * (size / maxSize) -- TODO: add values from settings here
 end

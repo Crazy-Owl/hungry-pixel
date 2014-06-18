@@ -15,6 +15,7 @@ easyDifficulty = {
     shrinkRate = 4,
     minimumWidth = 2,
     minimumHeight = 2,
+    maxSize = 400,
     -- gameplay section
     objectAppearRange = {3, 7},
     obstacleAppearRange = {15, 30},
