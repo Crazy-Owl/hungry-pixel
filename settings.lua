@@ -3,6 +3,13 @@
 windowHeight = 900
 windowWidth = 1200
 
+leftKey = "left"
+rightKey = "right"
+upKey = "up"
+downKey = "down"
+pauseKey = "escape"
+newGameKey = "n"
+
 easyDifficulty = {
     -- Hero section
     startingHeroWidth = 5,

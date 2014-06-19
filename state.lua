@@ -39,15 +39,18 @@ function State:prepareArena()
     self:addObject(Obstacle.new(-50, windowHeight - 1, windowWidth + 100, 51))
 end
 
+function State.getControlTable()
+   local controlTable = {}
+   controlTable[leftKey] = {-1, 0}
+   controlTable[rightKey] = {1, 0}
+   controlTable[upKey] = {0, -1}
+   controlTable[downKey] = {0, 1}
+   return controlTable
+end
+
 function State:newGame()
     local hero = Hero(math.random(100, 300), math.random(100, 300))
-    local controlTable = {
-        left = {-1, 0},
-        right = {1, 0},
-        up = {0, -1},
-        down = {0, 1}
-    }
-    hero:setControlTable(controlTable)
+    hero:setControlTable(State.getControlTable())
     self.hero = hero
     self.objects = {}
     self.objectAppearTimer = 0
@@ -84,7 +87,7 @@ end
 function State:draw()
     if self.finished then
         local font = love.graphics.getFont()
-        local message = "YOU LOST (n will begin new game)"
+        local message = "YOU LOST (" .. newGameKey .. " will begin new game)"
         local size = font:getWidth(message)
         local height = font:getHeight()
         love.graphics.setColor(255, 255, 255, 255)
@@ -97,7 +100,7 @@ function State:draw()
     end
     if self.paused then
         local font = love.graphics.getFont()
-        local message = "PAUSED (shift-ESC to quit to menu)"
+        local message = "PAUSED (shift-" .. pauseKey .. " to quit to menu)"
         local size = font:getWidth(message)
         local height = font:getHeight()
         love.graphics.setColor(255, 255, 255, 255)
@@ -107,13 +110,13 @@ function State:draw()
 end
 
 function State:keypressed(key)
-    if key == "escape" then
+    if key == pauseKey then
         if (love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and self.paused then -- два метода ввода с клавиатуры можно комбинировать
            currentState = mainMenu
         else
             self:togglePause()
         end
-    elseif key == "n" then
+    elseif key == newGameKey then
         self:newGame()
     end
 end
