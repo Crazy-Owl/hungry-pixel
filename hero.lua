@@ -19,7 +19,7 @@ function Hero.new(x, y) -- constructor
         slowing = currentDifficulty['heroSlowing'],
         score = 0,
         timeToShrink = currentDifficulty['heroTimeToShrink'],
-        size = 0,
+        size = currentDifficulty['startingHeroSize'],
         type = "hero"
     }, Hero)
     return self

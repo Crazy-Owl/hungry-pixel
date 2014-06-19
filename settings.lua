@@ -12,9 +12,10 @@ newGameKey = "n"
 
 easyDifficulty = {
     -- Hero section
-    startingHeroWidth = 5,
-    startingHeroHeight = 5,
+    startingHeroWidth = 1,
+    startingHeroHeight = 1,
     startingHeroSpeed = {0, 0},
+    startingHeroSize = 4,
     heroVelocity = 250,
     heroSlowing = 0.4,
     heroTimeToShrink = 10,

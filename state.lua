@@ -122,7 +122,7 @@ function State:keypressed(key)
 end
 
 function State:checkForFinish()
-    if self.hero.w <= 2 then
+    if self.hero.size <= 2 then
         return -1
     else
         return 0
