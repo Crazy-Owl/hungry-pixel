@@ -27,7 +27,7 @@ end
 
 local mainMenuItems = {
    {
-      "Start new game",
+      function() return "Start new game" end,
       function()
             currentState = State.new();
             currentState:newGame();
@@ -35,6 +35,8 @@ local mainMenuItems = {
    },
    {
       "Exit game",
+   {
+      function() return "Exit game" end,
       function()
             love.event.quit()
       end

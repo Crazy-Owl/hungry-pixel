@@ -27,7 +27,7 @@ function Menu:draw()
    local height = font:getHeight() * #self.items
    local maxSize = 0
    for i = 1, #self.items do
-      local messageSize = font:getWidth(self.items[i][1])
+      local messageSize = font:getWidth(self.items[i][1]())
       if maxSize < messageSize then
          maxSize = messageSize
       end
@@ -40,7 +40,7 @@ function Menu:draw()
          love.graphics.rectangle("fill", x, y + (i - 1) * font:getHeight(), maxSize, font:getHeight())
          love.graphics.setColor(255, 255, 255, 255)
       end
-      love.graphics.print(self.items[i][1], x, y + (i - 1) * font:getHeight())
+      love.graphics.print(self.items[i][1](), x, y + (i - 1) * font:getHeight())
    end
 end
 
