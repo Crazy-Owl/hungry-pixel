@@ -34,7 +34,11 @@ local mainMenuItems = {
       end
    },
    {
-      "Exit game",
+      function() return "Options" end,
+      function()
+         currentState = optionsMenu
+      end
+   },
    {
       function() return "Exit game" end,
       function()
@@ -43,8 +47,44 @@ local mainMenuItems = {
    }
 }
 
+local optionsMenuItems = {
+   {
+      function() return "LEFT: " .. leftKey end,
+      function()
+         optionsMenu:capture("leftKey")
+      end
+   },
+   {
+      function() return "RIGHT: " .. rightKey end,
+      function()
+         optionsMenu:capture("rightKey")
+      end
+   },
+   {
+      function() return "UP: " .. upKey end,
+      function()
+         optionsMenu:capture("upKey")
+      end
+   },
+   {
+      function() return "DOWN: " .. downKey end,
+      function()
+         optionsMenu:capture("downKey")
+      end
+   },
+   {
+      function() return "Back to menu" end,
+      function()
+         currentState = mainMenu
+      end
+   }
+}
+
 mainMenu = Menu.new()
 mainMenu:setItems(mainMenuItems)
+
+optionsMenu = Menu.new()
+optionsMenu:setItems(optionsMenuItems)
 
 function love.load()
     gameWindow = Window.new(windowWidth, windowHeight)

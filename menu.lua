@@ -11,7 +11,10 @@ setmetatable(Menu, {
 function Menu.new()
     local menuState = setmetatable({
         items = {},
-        currentIndex = 1
+        currentIndex = 1,
+        state = "nil",
+        capturedKey = nil,
+        captureTarget = nil
     }, Menu)
     return menuState
 end
@@ -49,6 +52,13 @@ function Menu:update(dt)
 end
 
 function Menu:keypressed(key)
+   if self.state == "capturing" then
+      if self.captureTarget then
+         _G[self.captureTarget] = key
+      end
+      self.state = "nil"
+      return
+   end
    if key == "down" then
       self.currentIndex = self.currentIndex + 1
       if self.currentIndex > #self.items then
@@ -67,4 +77,9 @@ end
 
 function Menu:checkForFinish()
    return 0
+end
+
+function Menu:capture(key)
+   self.state = "capturing"
+   self.captureTarget = key
 end
