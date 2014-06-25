@@ -59,12 +59,12 @@ function Obstacle:update(dt)
       return
    end
    if self.destination ~= nil then
-      self.x = self.x + self.speed[1] * dt * 50 -- TODO: speed should be set in settings
-      self.y = self.y + self.speed[2] * dt * 50
+      self.x = self.x + self.speed[1] * dt * currentDifficulty["obstacleBaseSpeed"] -- TODO: speed should be set in settings
+      self.y = self.y + self.speed[2] * dt * currentDifficulty["obstacleBaseSpeed"]
    end
    if self.kind == "moving" then
       self.dt = self.dt + dt
-      if self.dt > 10 then -- TODO: threshold should be set in settings
+      if self.dt > currentDifficulty["obstacleBaseTime"] then -- TODO: threshold should be set in settings
          self.dt = 0
          self:setRandomDestination()
       end

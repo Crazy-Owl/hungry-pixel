@@ -27,6 +27,8 @@ easyDifficulty = {
     -- gameplay section
     objectAppearRange = {3, 7},
     obstacleAppearRange = {15, 30},
+    obstacleBaseTime = 10,
+    obstacleBaseSpeed = 50,
     objectLifespan = {6, 15},
     objectWidth = 10,
     objectHeight = 10,
