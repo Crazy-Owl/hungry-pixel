@@ -40,7 +40,7 @@ function Obstacle:setRandomDestination()
    local dx = 0
    local dy = 0
    local x, y
-   while (dx < 10) or (dy < 10) do
+   while (math.abs(dx) < 10) and (math.abs(dy) < 10) do
       x = math.random(0, windowHeight)
       y = math.random(0, windowHeight)
       dx = x - self.x
