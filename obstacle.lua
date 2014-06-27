@@ -27,13 +27,14 @@ function Obstacle.random()
     local x = math.random(0, windowHeight)
     local y = math.random(0, windowHeight)
     local state = math.random(2)
+    local size = math.random(currentDifficulty["obstacleMinSize"], currentDifficulty["obstacleMaxSize"])
     if state > 1 then
-       local obst = Obstacle.new(x, y, currentDifficulty.obstacleWidth, currentDifficulty.obstacleHeight)
+       local obst = Obstacle.new(x, y, size, size)
        obst.kind = "moving"
        obst:setRandomDestination()
        return obst
     end
-    return Obstacle.new(x, y, currentDifficulty.obstacleWidth, currentDifficulty.obstacleHeight)
+    return Obstacle.new(x, y, size, size)
 end
 
 function Obstacle:setRandomDestination()

@@ -32,7 +32,7 @@ easyDifficulty = {
     objectLifespan = {6, 15},
     objectWidth = 10,
     objectHeight = 10,
-    obstacleWidth = 20,
-    obstacleHeight = 20,
+    obstacleMinSize = 20,
+    obstacleMaxSize = 35,
     displayRuler = true
 }
