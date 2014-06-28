@@ -48,11 +48,8 @@ function Obstacle:setRandomDestination()
       dy = y - self.y
    end
    self.destination = {x, y}
-   if dx >= dy then
-      self.speed = {sign(dx) * 1, sign(dy) * math.abs(dy / dx)}
-   else
-      self.speed = {sign(dy) * math.abs(dx / dy), sign(dy) * 1}
-   end
+   self.speed[1] = dx / currentDifficulty["obstacleBaseTime"]
+   self.speed[2] = dy / currentDifficulty["obstacleBaseTime"]
 end
 
 function Obstacle:update(dt)
@@ -60,12 +57,12 @@ function Obstacle:update(dt)
       return
    end
    if self.destination ~= nil then
-      self.x = self.x + self.speed[1] * dt * currentDifficulty["obstacleBaseSpeed"] -- TODO: speed should be set in settings
-      self.y = self.y + self.speed[2] * dt * currentDifficulty["obstacleBaseSpeed"]
+      self.x = self.x + self.speed[1] * dt
+      self.y = self.y + self.speed[2] * dt
    end
    if self.kind == "moving" then
       self.dt = self.dt + dt
-      if self.dt > currentDifficulty["obstacleBaseTime"] then -- TODO: threshold should be set in settings
+      if self.dt > currentDifficulty["obstacleBaseTime"] then
          self.dt = 0
          self:setRandomDestination()
       end
