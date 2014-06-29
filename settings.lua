@@ -17,6 +17,7 @@ easyDifficulty = {
     startingHeroSpeed = {0, 0},
     startingHeroSize = 4,
     heroVelocity = 250,
+    heroMaxVelocityChange = 200,
     heroSlowing = 0.4,
     heroTimeToShrink = 10,
     growRate = 2,

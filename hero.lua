@@ -185,5 +185,5 @@ function Hero:updateVelocity()
    local size = self.size
    local maxSize = currentDifficulty['maxSize']
    if size >  maxSize then size = maxSize end
-   self.velocity = 250 - 200 * (size / maxSize) -- TODO: add values from settings here
+   self.velocity = currentDifficulty["heroVelocity"] - currentDifficulty["heroMaxVelocityChange"] * (size / maxSize) -- TODO: add values from settings here
 end
