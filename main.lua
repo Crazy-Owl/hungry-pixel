@@ -29,8 +29,7 @@ local mainMenuItems = {
    {
       function() return "Start new game" end,
       function()
-            currentState = State.new();
-            currentState:newGame();
+         currentState = difficultyMenu
       end
    },
    {
@@ -43,6 +42,23 @@ local mainMenuItems = {
       function() return "Exit game" end,
       function()
             love.event.quit()
+      end
+   }
+}
+
+local difficultyMenuItems = {
+   {
+      function() return "Easy difficulty" end,
+      function()
+         currentDifficulty = easyDifficulty
+         currentState = State.new()
+         currentState:newGame()
+      end
+   },
+   {
+      function() return "Back to menu" end,
+      function()
+         currentState = mainMenu
       end
    }
 }
@@ -85,6 +101,9 @@ mainMenu:setItems(mainMenuItems)
 
 optionsMenu = Menu.new()
 optionsMenu:setItems(optionsMenuItems)
+
+difficultyMenu = Menu.new()
+difficultyMenu:setItems(difficultyMenuItems)
 
 function love.load()
     gameWindow = Window.new(windowWidth, windowHeight)
