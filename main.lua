@@ -64,6 +64,14 @@ local difficultyMenuItems = {
       end
    },
    {
+      function() return "Hard difficulty" end,
+      function()
+         currentDifficulty = hardDifficulty
+         currentState = State.new()
+         currentState:newGame()
+      end
+   },
+   {
       function() return "Back to menu" end,
       function()
          currentState = mainMenu

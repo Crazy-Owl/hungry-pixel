@@ -63,3 +63,30 @@ moderateDifficulty = {
     obstacleMaxSize = 45,
     displayRuler = true
 }
+
+hardDifficulty = {
+    -- Hero section
+    startingHeroWidth = 1,
+    startingHeroHeight = 1,
+    startingHeroSpeed = {0, 0},
+    startingHeroSize = 4,
+    heroVelocity = 400,
+    heroMaxVelocityChange = 300,
+    heroSlowing = 0.8,
+    heroTimeToShrink = 7,
+    growRate = 2,
+    shrinkRate = 4,
+    minimumWidth = 2,
+    minimumHeight = 2,
+    maxSize = 400,
+    -- gameplay section
+    objectAppearRange = {4, 6},
+    obstacleAppearRange = {10, 20},
+    obstacleBaseTime = 5,
+    objectLifespan = {4, 10},
+    objectWidth = 10,
+    objectHeight = 10,
+    obstacleMinSize = 30,
+    obstacleMaxSize = 60,
+    displayRuler = false
+}
